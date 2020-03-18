@@ -31,7 +31,7 @@ function generateText(now, channel, episodes) {
 		return {
 			main: timeLeftMsg,
 			sub: '',
-			tweet: `${config.title}まで残り ${timeLeftMsg} (${channel.name})`
+			tweet: `${config.title}まで残り ${timeLeftMsg} (${channel.name}) ※放送日を2020年10月10日 22時30分と仮定しての情報です`
 		}
 	}
 
