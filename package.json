@@ -1,0 +1,23 @@
+{
+  "name": "koiasu_made_nokori",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "webpack --mode=development",
+    "release": "webpack --mode=production"
+  },
+  "private": true,
+  "repository": "git@github.com:oriaca372m/koiasu_made_nokori.git",
+  "author": "oriaca <oriaca372m@outlook.jp>",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-loader": "^3.0.3",
+    "html-webpack-plugin": "^3.2.0",
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11"
+  },
+  "dependencies": {
+    "moment": "^2.24.0",
+    "moment-duration-format": "^2.3.2"
+  }
+}
