@@ -19,12 +19,12 @@ export default {
 		'12話',
 	],
 	channels: new Map([
-		['pending', {
-			name: '放送局未定',
+		['atx', {
+			name: 'AT-X',
 			time: new Map([
-				[1, moment('2020-10-10T22:30:00')]
+				[1, moment('2020-10-10T21:30:00')]
 			])
 		}],
 	]),
-	defaultChannelId: 'pending'
+	defaultChannelId: 'atx'
 }
