@@ -31,7 +31,7 @@ function generateText(now, channel, episodes) {
 		return {
 			main: timeLeftMsg,
 			sub: '',
-			tweet: `${config.title}まで残り ${timeLeftMsg} (${channel.name}) ※放送時間を21時30分と仮定しての情報です`
+			tweet: `${config.title}まで残り ${timeLeftMsg} (${channel.name})`
 		}
 	}
 
