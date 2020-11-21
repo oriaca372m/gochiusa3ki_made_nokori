@@ -35,9 +35,8 @@ function generateText(now, channel, episodes) {
 		}
 	}
 
-	const episodeTitle = episodes[episodeNumber - 1]
-
 	if (now.isBefore(channel.time[episodeNumber - 2].clone().add(episodeLength))) {
+		const episodeTitle = episodes[episodeNumber - 2]
 		return {
 			main: `${episodeTitle} 放送中`,
 			sub: '',
@@ -45,6 +44,7 @@ function generateText(now, channel, episodes) {
 		}
 	}
 
+	const episodeTitle = episodes[episodeNumber - 1]
 	return {
 		main: '放送開始',
 		sub: `${episodeTitle}まで残り ${timeLeftMsg}`,
