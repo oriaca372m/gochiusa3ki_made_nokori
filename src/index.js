@@ -4,39 +4,22 @@ import 'moment-duration-format'
 import config from './site-config-runtime.js'
 
 function generateText(now, channel, episodes) {
-	let episodeNumber
-	let isAfterFinalEpisode = true
+	const afterLastEpisodeNumber = channel.time.length
 	const episodeLength = moment.duration(30, 'minutes')
+
+	let episodeNumber = afterLastEpisodeNumber
 
 	for (let i = 0; i < channel.time.length; i++) {
 		if (now.isBefore(channel.time[i])) {
-			isAfterFinalEpisode = false
-			episodeNumber = i + 1
+			episodeNumber = i
 			break
 		}
 	}
 
-	if (isAfterFinalEpisode) {
-		return {
-			main: '放送終了',
-			sub: '',
-			tweet: `${config.title}の放送は終了しました。 (${channel.name})`
-		}
-	}
+	console.log(episodeNumber)
 
-	const diffDuration = moment.duration(channel.time[episodeNumber - 1].diff(now))
-	const timeLeftMsg = diffDuration.format('Y年Mヶ月D日hh時間mm分ss.SS秒', { trim: true })
-
-	if (episodeNumber === 1) {
-		return {
-			main: timeLeftMsg,
-			sub: '',
-			tweet: `${config.title}まで残り ${timeLeftMsg} (${channel.name})`
-		}
-	}
-
-	if (now.isBefore(channel.time[episodeNumber - 2].clone().add(episodeLength))) {
-		const episodeTitle = episodes[episodeNumber - 2]
+	if (0 < episodeNumber && now.isBefore(channel.time[episodeNumber - 1].clone().add(episodeLength))) {
+		const episodeTitle = episodes[episodeNumber - 1]
 		return {
 			main: `${episodeTitle} 放送中`,
 			sub: '',
@@ -44,7 +27,26 @@ function generateText(now, channel, episodes) {
 		}
 	}
 
-	const episodeTitle = episodes[episodeNumber - 1]
+	if (episodeNumber === afterLastEpisodeNumber) {
+		return {
+			main: '放送終了',
+			sub: '',
+			tweet: `${config.title}の放送は終了しました。 (${channel.name})`
+		}
+	}
+
+	const diffDuration = moment.duration(channel.time[episodeNumber].diff(now))
+	const timeLeftMsg = diffDuration.format('Y年Mヶ月D日hh時間mm分ss.SS秒', { trim: true })
+
+	if (episodeNumber === 0) {
+		return {
+			main: timeLeftMsg,
+			sub: '',
+			tweet: `${config.title}まで残り ${timeLeftMsg} (${channel.name})`
+		}
+	}
+
+	const episodeTitle = episodes[episodeNumber]
 	return {
 		main: '放送開始',
 		sub: `${episodeTitle}まで残り ${timeLeftMsg}`,
