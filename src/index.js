@@ -16,8 +16,6 @@ function generateText(now, channel, episodes) {
 		}
 	}
 
-	console.log(episodeNumber)
-
 	if (0 < episodeNumber && now.isBefore(channel.time[episodeNumber - 1].clone().add(episodeLength))) {
 		const episodeTitle = episodes[episodeNumber - 1]
 		return {
