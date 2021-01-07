@@ -7,11 +7,21 @@
 		<title><%= siteConfig.title %>まで残り</title>
 	</head>
 	<body>
-		<h1><%= siteConfig.title %>まで残り</h1>
-		<select id="channel" style="font-size: 25px;"></select>
-		<p id="time-display" style="font-size: 50px; text-align: center;"></p>
-		<p id="time-sub-display" style="font-size: 30px; text-align: center;"></p>
-		<button type="button" id="tweet" style="font-size: 25px;">ツイート</button>
-		<p>放送時間の取得元: <a href="<%= siteConfig.sourceUrl %>"><%= siteConfig.sourceUrl %></a></p>
+		<header>
+			<h1><%= siteConfig.title %>まで残り</h1>
+		</header>
+		<main>
+			<select id="channel" style="font-size: 25px;"></select>
+			<p id="time-display" style="font-size: 50px; text-align: center;"></p>
+			<p id="time-sub-display" style="font-size: 30px; text-align: center;"></p>
+			<button type="button" id="tweet" style="font-size: 25px;">ツイート</button>
+		</main>
+		<footer>
+			<p>放送時間の取得元: <a href="<%= siteConfig.sourceUrl %>"><%= siteConfig.sourceUrl %></a></p>
+			<p>
+				<a href="<%= siteConfig.repoUrl %>">このサイトのソースコード</a>
+				<img src="<%= siteConfig.repoUrl %>workflows/CI/badge.svg">
+			</p>
+		</footer>
 	</body>
 </html>
