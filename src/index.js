@@ -28,7 +28,7 @@ function generateText(now, channel, episodes) {
 	if (episodeNumber === afterLastEpisodeNumber) {
 		const lastEpisodeTime = channel.time[channel.time.length - 1].clone().add(episodeLength)
 		const diffDuration = moment.duration(now.diff(lastEpisodeTime))
-		const passedTime = diffDuration.format('Y年Mヶ月D日hh時間mm分ss.SS秒', { trim: true })
+		const passedTime = diffDuration.format('Y年Mヶ月D日', { trim: true })
 
 		return {
 			main: '放送終了',
