@@ -1,20 +1,12 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const ESLintPlugin = require('eslint-webpack-plugin')
 
 module.exports = {
 	entry: './src/index.js',
 	output: {
 		filename: 'main.js',
 		path: path.resolve(__dirname, 'dist')
-	},
-	module: {
-		rules: [
-			{
-				test: /\.js$/,
-				exclude: /node_modules/,
-				loader: 'eslint-loader'
-			}
-		]
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
@@ -23,6 +15,7 @@ module.exports = {
 				siteConfig: require('./src/site-config.json')
 			},
 			inject: 'head'
-		})
+		}),
+		new ESLintPlugin()
 	]
 }
