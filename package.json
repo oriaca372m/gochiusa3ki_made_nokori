@@ -10,11 +10,11 @@
   "author": "oriaca <oriaca372m@outlook.jp>",
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^7.17.0",
+    "eslint": "^7.28.0",
     "eslint-loader": "^4.0.2",
     "html-webpack-plugin": "^5.3.1",
-    "webpack": "^5.11.1",
-    "webpack-cli": "^4.3.1"
+    "webpack": "^5.38.1",
+    "webpack-cli": "^4.7.1"
   },
   "dependencies": {
     "moment": "^2.29.1",
