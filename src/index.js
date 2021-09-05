@@ -101,6 +101,12 @@ let channelId = config.defaultChannelId
 	}
 }
 
+function updateTextContent(elm, text) {
+	if (elm.textContent !== text) {
+		elm.textContent = text
+	}
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 	const display = document.getElementById('time-display')
 	const subdisplay = document.getElementById('time-sub-display')
@@ -123,8 +129,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	window.setInterval(() => {
 		const text = generateText(moment(), timeTable.get(channelId), episodes)
-		display.textContent = text.main
-		subdisplay.textContent = text.sub
+		updateTextContent(display, text.main)
+		updateTextContent(subdisplay, text.sub)
 	}, 10)
 
 	document.getElementById('tweet').addEventListener('click', () => {
