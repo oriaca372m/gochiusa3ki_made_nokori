@@ -16,12 +16,15 @@ function generateText(now, channel, episodes) {
 		}
 	}
 
-	if (0 < episodeNumber && now.isBefore(channel.time[episodeNumber - 1].clone().add(episodeLength))) {
+	if (
+		0 < episodeNumber &&
+		now.isBefore(channel.time[episodeNumber - 1].clone().add(episodeLength))
+	) {
 		const episodeTitle = episodes[episodeNumber - 1]
 		return {
 			main: `${episodeTitle} 放送中`,
 			sub: '',
-			tweet: `${config.title}は放送開始しました! ${episodeTitle}が放送中です! (${channel.name})`
+			tweet: `${config.title}は放送開始しました! ${episodeTitle}が放送中です! (${channel.name})`,
 		}
 	}
 
@@ -33,7 +36,7 @@ function generateText(now, channel, episodes) {
 		return {
 			main: '放送終了',
 			sub: `(放送終了から ${passedTime} 経過)`,
-			tweet: `${config.title}の放送は終了しました。終了から ${passedTime} 経過しました。 (${channel.name})`
+			tweet: `${config.title}の放送は終了しました。終了から ${passedTime} 経過しました。 (${channel.name})`,
 		}
 	}
 
@@ -44,7 +47,7 @@ function generateText(now, channel, episodes) {
 		return {
 			main: timeLeftMsg,
 			sub: '',
-			tweet: `${config.title}まで残り ${timeLeftMsg} (${channel.name})`
+			tweet: `${config.title}まで残り ${timeLeftMsg} (${channel.name})`,
 		}
 	}
 
@@ -52,7 +55,7 @@ function generateText(now, channel, episodes) {
 	return {
 		main: '放送開始',
 		sub: `${episodeTitle}まで残り ${timeLeftMsg}`,
-		tweet: `${config.title}は放送開始しました! ${episodeTitle}まで残り ${timeLeftMsg} (${channel.name})`
+		tweet: `${config.title}は放送開始しました! ${episodeTitle}まで残り ${timeLeftMsg} (${channel.name})`,
 	}
 }
 
@@ -126,7 +129,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	document.getElementById('tweet').addEventListener('click', () => {
 		let url = new URL('https://twitter.com/intent/tweet')
-		url.searchParams.append('text', generateText(moment(), timeTable.get(channelId), episodes).tweet)
+		url.searchParams.append(
+			'text',
+			generateText(moment(), timeTable.get(channelId), episodes).tweet
+		)
 		url.searchParams.append('url', generateChannelUrl(channelId))
 		url.searchParams.append('hashtags', config.hashtags)
 		window.open().location.href = url.toString()
