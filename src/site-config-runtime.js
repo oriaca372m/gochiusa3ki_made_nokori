@@ -1,5 +1,3 @@
-import moment from 'moment'
-
 import siteConfig from './site-config.json'
 
 export default {
@@ -23,42 +21,42 @@ export default {
 			'atx',
 			{
 				name: 'AT-X',
-				time: new Map([[1, moment('2020-10-10T21:30:00')]]),
+				time: new Map([[1, '2020-10-10T21:30:00']]),
 			},
 		],
 		[
 			'tokyomx',
 			{
 				name: 'TOKYO MX',
-				time: new Map([[1, moment('2020-10-10T22:00:00')]]),
+				time: new Map([[1, '2020-10-10T22:00:00+09:00']]),
 			},
 		],
 		[
 			'bs11',
 			{
 				name: 'BS11',
-				time: new Map([[1, moment('2020-10-10T22:00:00')]]),
+				time: new Map([[1, '2020-10-10T22:00:00+09:00']]),
 			},
 		],
 		[
 			'abema',
 			{
 				name: 'ABEMA',
-				time: new Map([[1, moment('2020-10-10T22:00:00')]]),
+				time: new Map([[1, '2020-10-10T22:00:00+09:00']]),
 			},
 		],
 		[
 			'suntv',
 			{
 				name: 'サンテレビ',
-				time: new Map([[1, moment('2020-10-10T22:30:00')]]),
+				time: new Map([[1, '2020-10-10T22:30:00+09:00']]),
 			},
 		],
 		[
 			'kbskyoto',
 			{
 				name: 'KBS京都',
-				time: new Map([[1, moment('2020-10-10T23:00:00')]]),
+				time: new Map([[1, '2020-10-10T23:00:00+09:00']]),
 			},
 		],
 	]),

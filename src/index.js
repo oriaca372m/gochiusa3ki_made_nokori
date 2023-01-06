@@ -1,25 +1,50 @@
-import moment from 'moment'
-import 'moment-duration-format'
+import { DateTime, Duration, Interval } from 'luxon'
 
 import config from './site-config-runtime.js'
 
+function formatIntervalMs(interval) {
+	const { years, months, days, hours, minutes, seconds, milliseconds } = interval
+		.toDuration(['years', 'months', 'days', 'hours', 'minutes', 'seconds', 'milliseconds'])
+		.toObject()
+
+	let str = ''
+
+	str += years !== 0 ? `${years}年` : ''
+	str += months !== 0 ? `${months}ヶ月` : ''
+	str += days !== 0 ? `${days}日` : ''
+	str += hours !== 0 ? `${hours}時間` : ''
+	str += minutes !== 0 ? `${minutes}分` : ''
+	str += `${seconds}.${`${milliseconds}0`.substring(0, 2)}秒`
+
+	return str
+}
+
+function formatIntervalD(interval) {
+	const { years, months, days } = interval.toDuration(['years', 'months', 'days']).toObject()
+
+	let str = ''
+
+	str += years !== 0 ? `${years}年` : ''
+	str += months !== 0 ? `${months}ヶ月` : ''
+	str += str === '' || days !== 0 ? `${days.toFixed()}日` : ''
+
+	return str
+}
+
 function generateText(now, channel, episodes) {
 	const afterLastEpisodeNumber = channel.time.length
-	const episodeLength = moment.duration(30, 'minutes')
+	const episodeLength = Duration.fromObject({ minutes: 30 })
 
 	let episodeNumber = afterLastEpisodeNumber
 
 	for (let i = 0; i < channel.time.length; i++) {
-		if (now.isBefore(channel.time[i])) {
+		if (now < channel.time[i]) {
 			episodeNumber = i
 			break
 		}
 	}
 
-	if (
-		0 < episodeNumber &&
-		now.isBefore(channel.time[episodeNumber - 1].clone().add(episodeLength))
-	) {
+	if (0 < episodeNumber && now < channel.time[episodeNumber - 1].plus(episodeLength)) {
 		const episodeTitle = episodes[episodeNumber - 1]
 		return {
 			main: `${episodeTitle} 放送中`,
@@ -29,9 +54,9 @@ function generateText(now, channel, episodes) {
 	}
 
 	if (episodeNumber === afterLastEpisodeNumber) {
-		const lastEpisodeTime = channel.time[channel.time.length - 1].clone().add(episodeLength)
-		const diffDuration = moment.duration(now.diff(lastEpisodeTime))
-		const passedTime = diffDuration.format('Y年Mヶ月D日', { trim: true })
+		const lastEpisodeTime = channel.time[channel.time.length - 1].plus(episodeLength)
+		const interval = Interval.fromDateTimes(lastEpisodeTime, now)
+		const passedTime = formatIntervalD(interval)
 
 		return {
 			main: '放送終了',
@@ -40,8 +65,8 @@ function generateText(now, channel, episodes) {
 		}
 	}
 
-	const diffDuration = moment.duration(channel.time[episodeNumber].diff(now))
-	const timeLeftMsg = diffDuration.format('Y年Mヶ月D日hh時間mm分ss.SS秒', { trim: true })
+	const interval = Interval.fromDateTimes(now, channel.time[episodeNumber])
+	const timeLeftMsg = formatIntervalMs(interval)
 
 	if (episodeNumber === 0) {
 		return {
@@ -73,11 +98,13 @@ function generateTimeTable(channels, episodes) {
 		const time = []
 		const vtime = value.time
 
-		let oldTime = vtime.get(1)
+		let oldTime = DateTime.fromISO(vtime.get(1))
 		time.push(oldTime)
 
 		for (let i = 2; i <= finalEpisode; i++) {
-			const currentTime = vtime.has(i) ? vtime.get(i) : oldTime.clone().add(7, 'd')
+			const currentTime = vtime.has(i)
+				? DateTime.fromISO(vtime.get(i))
+				: oldTime.plus({ days: 7 })
 
 			time.push(currentTime)
 			oldTime = currentTime
@@ -128,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	})
 
 	window.setInterval(() => {
-		const text = generateText(moment(), timeTable.get(channelId), episodes)
+		const text = generateText(DateTime.now(), timeTable.get(channelId), episodes)
 		updateTextContent(display, text.main)
 		updateTextContent(subdisplay, text.sub)
 	}, 10)
@@ -137,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		let url = new URL('https://twitter.com/intent/tweet')
 		url.searchParams.append(
 			'text',
-			generateText(moment(), timeTable.get(channelId), episodes).tweet
+			generateText(DateTime.now(), timeTable.get(channelId), episodes).tweet
 		)
 		url.searchParams.append('url', generateChannelUrl(channelId))
 		url.searchParams.append('hashtags', config.hashtags)
